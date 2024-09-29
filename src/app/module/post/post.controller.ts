@@ -24,6 +24,34 @@ const createPost = catchAsync(async (req, res) => {
   });
 });
 
+const getAllPosts = catchAsync(async (req, res) => {
+  const result = await PostServices.getAllPostsFromDB();
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  sendResponse(res, {
+    success: true,
+    message: "Posts retrived sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+const getSinglePost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PostServices.getSinglePostFromDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  sendResponse(res, {
+    success: true,
+    message: "Post retrived sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+
 export const PostControllers = {
   createPost,
+  getAllPosts,
+  getSinglePost,
 };
