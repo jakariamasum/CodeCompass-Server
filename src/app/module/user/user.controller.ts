@@ -4,6 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { User } from "./user.model";
 import { UserServices } from "./user.service";
 import AppError from "../../errors/AppError";
+import { createToken } from "../../utils/tokenGenerateFunction";
+import config from "../../../config";
 
 const createUser = catchAsync(async (req, res) => {
   const { email } = req.body;
@@ -20,6 +22,29 @@ const createUser = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     message: "User created successfully!",
     data: result,
+  });
+});
+
+const signIn = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await UserServices.signInIntoDB(email, password);
+
+  if (!user) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid email or password");
+  }
+
+  const accessToken = createToken(
+    { userId: user.email, role: user.role },
+    config.jwt_secret as string,
+    config.jwt_expires as string
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Login successful!",
+    data: { accessToken },
   });
 });
 
@@ -51,6 +76,7 @@ const getSingleUser = catchAsync(async (req, res) => {
 
 export const UserControllers = {
   createUser,
+  signIn,
   getAllUsers,
   getSingleUser,
 };

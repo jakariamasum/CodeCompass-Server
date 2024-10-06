@@ -9,6 +9,7 @@ router.post(
   validateRequest(UservalidationSchemas.createUserValidationSchema),
   UserControllers.createUser
 );
+router.post("/login", UserControllers.signIn);
 router.get("/", UserControllers.getAllUsers);
 router.get("/:email", UserControllers.getSingleUser);
 export const UserRoutes = router;
