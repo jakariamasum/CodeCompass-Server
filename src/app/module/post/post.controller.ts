@@ -64,10 +64,25 @@ const updatePost = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const deletePost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PostServices.deletePostFromDb(id as string);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  console.log(result);
+  sendResponse(res, {
+    success: true,
+    message: "Post deleted sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
 export const PostControllers = {
   createPost,
   getAllPosts,
   getSinglePost,
   updatePost,
+  deletePost,
 };

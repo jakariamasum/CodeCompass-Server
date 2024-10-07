@@ -21,10 +21,15 @@ const updatePostIntoDb = async (id: string, payload: Partial<IPost>) => {
   });
   return result;
 };
+const deletePostFromDb = async (id: string) => {
+  const result = await Post.findByIdAndDelete({ _id: id });
+  return result;
+};
 
 export const PostServices = {
   createPostInDB,
   getAllPostsFromDB,
   getSinglePostFromDB,
   updatePostIntoDb,
+  deletePostFromDb,
 };
