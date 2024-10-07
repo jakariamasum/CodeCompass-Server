@@ -35,7 +35,12 @@ const signIn = catchAsync(async (req, res) => {
   }
 
   const accessToken = createToken(
-    { userId: user.email, role: user.role },
+    {
+      userId: user.email,
+      role: user.role,
+      fname: user.fname,
+      lname: user.lname,
+    },
     config.jwt_secret as string,
     config.jwt_expires as string
   );

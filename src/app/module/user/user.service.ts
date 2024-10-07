@@ -7,6 +7,7 @@ const createUserInDB = async (payload: IUser) => {
   return result;
 };
 const signInIntoDB = async (email: string, password: string) => {
+  console.log("hit");
   const user = await User.findOne({ email });
 
   if (!user) {
