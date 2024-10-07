@@ -32,9 +32,26 @@ const getSingleUserFromDB = async (email: string) => {
   return result;
 };
 
+const toogleUserIntoDB = async (id: string) => {
+  const user = await User.findById({ _id: id });
+  if (!user) {
+    return null;
+  }
+  const status = user.active ? false : true;
+  const result = await User.findByIdAndUpdate({ _id: id }, { active: status });
+  return result;
+};
+
+const deleteUserFromDB = async (id: string) => {
+  const result = await User.findByIdAndDelete({ _id: id });
+  return result;
+};
+
 export const UserServices = {
   createUserInDB,
   signInIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  toogleUserIntoDB,
+  deleteUserFromDB,
 };

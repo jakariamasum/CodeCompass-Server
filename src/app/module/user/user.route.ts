@@ -12,4 +12,6 @@ router.post(
 router.post("/login", UserControllers.signIn);
 router.get("/", UserControllers.getAllUsers);
 router.get("/:email", UserControllers.getSingleUser);
+router.put("/:id", UserControllers.toogleUser);
+router.delete("/:id", UserControllers.deleteUser);
 export const UserRoutes = router;

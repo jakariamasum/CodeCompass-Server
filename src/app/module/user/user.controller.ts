@@ -80,9 +80,38 @@ const getSingleUser = catchAsync(async (req, res) => {
   });
 });
 
+const toogleUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.toogleUserIntoDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User updated sucessfully!!",
+    data: result,
+  });
+});
+const deleteUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.deleteUserFromDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User deleted sucessfully!!",
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createUser,
   signIn,
   getAllUsers,
   getSingleUser,
+  toogleUser,
+  deleteUser,
 };

@@ -12,6 +12,7 @@ export interface IUser {
   followers: Types.ObjectId[];
   verified: boolean;
   matchPassword(enteredPassword: string): Promise<boolean>;
+  active: boolean;
 }
 
 export interface UserModel extends Model<IUser> {
