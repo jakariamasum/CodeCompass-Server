@@ -36,7 +36,8 @@ const signIn = catchAsync(async (req, res) => {
 
   const accessToken = createToken(
     {
-      userId: user.email,
+      _id: user._id,
+      email: user.email,
       role: user.role,
       fname: user.fname,
       lname: user.lname,

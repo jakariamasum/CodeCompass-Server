@@ -6,6 +6,7 @@ import { PostServices } from "./post.service";
 import { User } from "../user/user.model";
 
 const createPost = catchAsync(async (req, res) => {
+  console.log("hit post", req.body);
   const { user } = req.body;
   const existingUser = await User.findById(user);
   if (!existingUser) {
@@ -49,9 +50,24 @@ const getSinglePost = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const updatePost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PostServices.updatePostIntoDb(id as string, req.body);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  console.log(result);
+  sendResponse(res, {
+    success: true,
+    message: "Post updated sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
 export const PostControllers = {
   createPost,
   getAllPosts,
   getSinglePost,
+  updatePost,
 };

@@ -15,8 +15,16 @@ const getSinglePostFromDB = async (id: string) => {
   return result;
 };
 
+const updatePostIntoDb = async (id: string, payload: Partial<IPost>) => {
+  const result = await Post.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const PostServices = {
   createPostInDB,
   getAllPostsFromDB,
   getSinglePostFromDB,
+  updatePostIntoDb,
 };
