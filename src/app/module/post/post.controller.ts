@@ -50,6 +50,21 @@ const getSinglePost = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const getUserPosts = catchAsync(async (req, res) => {
+  const { user } = req.query;
+  const result = await PostServices.getUserPostsFromDB(user as string);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  sendResponse(res, {
+    success: true,
+    message: "Posts retrived sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+
 const updatePost = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await PostServices.updatePostIntoDb(id as string, req.body);
@@ -85,4 +100,5 @@ export const PostControllers = {
   getSinglePost,
   updatePost,
   deletePost,
+  getUserPosts,
 };

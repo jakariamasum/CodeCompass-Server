@@ -15,6 +15,12 @@ const getSinglePostFromDB = async (id: string) => {
   return result;
 };
 
+const getUserPostsFromDB = async (id: string) => {
+  console.log(id);
+  const result = await Post.find({ user: id });
+  return result;
+};
+
 const updatePostIntoDb = async (id: string, payload: Partial<IPost>) => {
   const result = await Post.findByIdAndUpdate({ _id: id }, payload, {
     new: true,
@@ -32,4 +38,5 @@ export const PostServices = {
   getSinglePostFromDB,
   updatePostIntoDb,
   deletePostFromDb,
+  getUserPostsFromDB,
 };

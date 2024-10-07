@@ -14,4 +14,7 @@ router.get("/:id", PostControllers.getSinglePost);
 router.put("/:id", PostControllers.updatePost);
 router.delete("/:id", PostControllers.deletePost);
 
+// user routes
+router.get("/user-post", PostControllers.getUserPosts);
+
 export const PostRoutes = router;
