@@ -16,5 +16,7 @@ router.delete("/:id", PostControllers.deletePost);
 
 // user routes
 router.get("/user-post", PostControllers.getUserPosts);
+router.put("/likes/:id", PostControllers.likePost);
+router.put("/dislikes/:id", PostControllers.disLikePost);
 
 export const PostRoutes = router;

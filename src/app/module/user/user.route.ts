@@ -14,4 +14,7 @@ router.get("/", UserControllers.getAllUsers);
 router.get("/:email", UserControllers.getSingleUser);
 router.put("/:id", UserControllers.toogleUser);
 router.delete("/:id", UserControllers.deleteUser);
+
+// user routes
+router.put("/profile/:id", UserControllers.updateUser);
 export const UserRoutes = router;

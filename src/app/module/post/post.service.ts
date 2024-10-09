@@ -7,11 +7,11 @@ const createPostInDB = async (payload: IPost) => {
 };
 
 const getAllPostsFromDB = async () => {
-  const result = await Post.find();
+  const result = await Post.find().populate("user");
   return result;
 };
 const getSinglePostFromDB = async (id: string) => {
-  const result = await Post.findById({ _id: id });
+  const result = await Post.findById({ _id: id }).populate("user");
   return result;
 };
 
@@ -32,6 +32,21 @@ const deletePostFromDb = async (id: string) => {
   return result;
 };
 
+const likePostIntoDB = async (id: string) => {
+  const result = await Post.findByIdAndUpdate(
+    { _id: id },
+    { $inc: { likes: 1 } }
+  );
+  return result;
+};
+const disLikePostIntoDB = async (id: string) => {
+  const result = await Post.findByIdAndUpdate(
+    { _id: id },
+    { $inc: { dislikes: 1 } }
+  );
+  return result;
+};
+
 export const PostServices = {
   createPostInDB,
   getAllPostsFromDB,
@@ -39,4 +54,6 @@ export const PostServices = {
   updatePostIntoDb,
   deletePostFromDb,
   getUserPostsFromDB,
+  likePostIntoDB,
+  disLikePostIntoDB,
 };

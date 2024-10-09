@@ -93,6 +93,34 @@ const deletePost = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const likePost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PostServices.likePostIntoDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  console.log(result);
+  sendResponse(res, {
+    success: true,
+    message: "Post likes sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+const disLikePost = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PostServices.disLikePostIntoDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No posts available!");
+  }
+  console.log(result);
+  sendResponse(res, {
+    success: true,
+    message: "Post disLikes sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
 export const PostControllers = {
   createPost,
@@ -101,4 +129,6 @@ export const PostControllers = {
   updatePost,
   deletePost,
   getUserPosts,
+  likePost,
+  disLikePost,
 };

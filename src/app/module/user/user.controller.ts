@@ -93,6 +93,19 @@ const toogleUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const updateUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.updateUserIntoDB(id as string, req.body);
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User updated sucessfully!!",
+    data: result,
+  });
+});
 const deleteUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await UserServices.deleteUserFromDB(id as string);
@@ -114,4 +127,5 @@ export const UserControllers = {
   getSingleUser,
   toogleUser,
   deleteUser,
+  updateUser,
 };

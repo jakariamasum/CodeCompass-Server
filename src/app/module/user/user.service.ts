@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
@@ -42,8 +43,22 @@ const toogleUserIntoDB = async (id: string) => {
   return result;
 };
 
+const updateUserIntoDB = async (id: string, payload: Partial<IUser>) => {
+  const result = await User.findById({ _id: id }, payload, { new: true });
+  return result;
+};
+
 const deleteUserFromDB = async (id: string) => {
   const result = await User.findByIdAndDelete({ _id: id });
+  return result;
+};
+
+const followUserIntoDB = async (userId: string, follower: string) => {
+  const result = await User.findByIdAndUpdate(
+    { _id: userId },
+    { $addToSet: { followers: new Types.ObjectId(follower) } },
+    { new: true }
+  );
   return result;
 };
 
@@ -54,4 +69,6 @@ export const UserServices = {
   getSingleUserFromDB,
   toogleUserIntoDB,
   deleteUserFromDB,
+  updateUserIntoDB,
+  followUserIntoDB,
 };
