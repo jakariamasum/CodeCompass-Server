@@ -7,6 +7,7 @@ const commentSchema = new Schema<IComment>(
     post: { type: Schema.Types.ObjectId, ref: "Post" },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
+    content: { type: String, required: true },
   },
   {
     timestamps: true,
