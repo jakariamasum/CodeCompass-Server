@@ -18,6 +18,7 @@ const getSinglePostFromDB = async (id: string) => {
 const getUserPostsFromDB = async (id: string) => {
   console.log(id);
   const result = await Post.find({ user: id });
+  console.log(result);
   return result;
 };
 

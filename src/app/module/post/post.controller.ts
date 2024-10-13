@@ -53,10 +53,12 @@ const getSinglePost = catchAsync(async (req, res) => {
 
 const getUserPosts = catchAsync(async (req, res) => {
   const { user } = req.query;
+  console.log(user);
   const result = await PostServices.getUserPostsFromDB(user as string);
   if (!result) {
     throw new AppError(404, "No posts available!");
   }
+  console.log(result);
   sendResponse(res, {
     success: true,
     message: "Posts retrived sucessfully!",
