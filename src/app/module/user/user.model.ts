@@ -13,7 +13,7 @@ const UserSchema = new Schema<IUser>(
     role: { type: String, enum: ["user", "admin"], default: "user" },
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    verified: { type: Boolean, default: false },
+    verified: { type: String, enum: ["no", "pending", "yes"], default: "no" },
     active: { type: Boolean, default: true },
   },
   {

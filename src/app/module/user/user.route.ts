@@ -15,6 +15,8 @@ router.get("/:email", UserControllers.getSingleUser);
 router.put("/:id", UserControllers.toogleUser);
 router.delete("/:id", UserControllers.deleteUser);
 
+router.post("/recover/password/kk", UserControllers.recoverPassword);
+
 // user routes
 router.put("/profile/:id", UserControllers.updateUser);
 export const UserRoutes = router;

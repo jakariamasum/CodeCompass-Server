@@ -44,7 +44,9 @@ const toogleUserIntoDB = async (id: string) => {
 };
 
 const updateUserIntoDB = async (id: string, payload: Partial<IUser>) => {
-  const result = await User.findById({ _id: id }, payload, { new: true });
+  const result = await User.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
   return result;
 };
 

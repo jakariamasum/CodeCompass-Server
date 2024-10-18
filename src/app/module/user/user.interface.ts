@@ -10,11 +10,15 @@ export interface IUser {
   role: "user" | "admin";
   following: Types.ObjectId[];
   followers: Types.ObjectId[];
-  verified: boolean;
+  verified: "no" | "pendinig" | "yes";
   matchPassword(enteredPassword: string): Promise<boolean>;
   active: boolean;
 }
 
 export interface UserModel extends Model<IUser> {
   isUserExists(email: string): Promise<IUser | null>;
+}
+export interface PasswordResetToken {
+  token: string;
+  expires: Date;
 }
