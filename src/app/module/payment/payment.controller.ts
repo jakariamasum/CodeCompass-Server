@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import catchAsync from "../../utils/catchAsync";
 import { PaymentServices } from "./payment.service";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2024-09-30.acacia",
 });
 const checkout = catchAsync(async (req, res) => {
@@ -40,48 +40,37 @@ const checkout = catchAsync(async (req, res) => {
 });
 
 const savePaymentData = catchAsync(async (req, res) => {
+  const sig = req.headers["stripe-signature"];
   let event;
 
   try {
-    // Directly parse the incoming request body as JSON
-    event = req.body;
-    console.log(req.body);
+    // Verify the event with Stripe's webhook secret
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig as string,
+      process.env.STRIPE_WEBHOOK_SECRET as string
+    );
   } catch (err: any) {
-    console.error("Error parsing webhook request body.", err);
+    console.error("⚠️ Webhook signature verification failed.", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle the event type
-  switch (event.type) {
-    case "checkout.session.completed":
-      const session = event.data.object;
-      try {
-        // Fetch the session details from Stripe to verify the payment status
-        const stripeSession = await stripe.checkout.sessions.retrieve(
-          session.id
-        );
+  // Handle the event
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+    console.log("Payment was successful:", session);
 
-        // Ensure that the payment was completed successfully
-        if (stripeSession.payment_status === "paid") {
-          // Save the payment data to the database
-          await PaymentServices.savePaymentDataToDB(stripeSession);
-          console.log("Payment data saved successfully:", stripeSession);
-        } else {
-          console.error(
-            "Payment was not completed. Payment status:",
-            stripeSession.payment_status
-          );
-        }
-      } catch (error) {
-        console.error(
-          "Error retrieving payment session or saving data:",
-          error
-        );
-      }
-      break;
-    default:
-      console.log(`Unhandled event type: ${event.type}`);
+    // Save payment data to the database
+    const isSaved = await PaymentServices.savePaymentDataToDB(session);
+    if (isSaved) {
+      console.log("Payment data saved successfully.");
+    } else {
+      console.error("Failed to save payment data.");
+    }
   }
+
+  // Return a 200 response to acknowledge receipt of the event
+  res.json({ received: true });
 
   res.json({ received: true });
 });

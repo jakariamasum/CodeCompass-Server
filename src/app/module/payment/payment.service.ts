@@ -14,6 +14,7 @@ const savePaymentDataToDB = async (session: any) => {
 
     await Payment.create(paymentData);
     console.log("Payment data saved successfully:", paymentData);
+    return true;
   } catch (error) {
     console.error("Error saving payment data to the database:", error);
   }

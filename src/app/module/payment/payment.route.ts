@@ -1,9 +1,12 @@
 import express from "express";
 import { PaymentControllers } from "./payment.controller";
-import bodyParser from "body-parser";
 
 const router = express.Router();
 router.post("/checkout", PaymentControllers.checkout);
-router.post("/webhook", PaymentControllers.savePaymentData);
+router.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  PaymentControllers.savePaymentData
+);
 
 export const PaymentRoutes = router;
