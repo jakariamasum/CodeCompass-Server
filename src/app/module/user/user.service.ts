@@ -42,6 +42,15 @@ const toogleUserIntoDB = async (id: string) => {
   const result = await User.findByIdAndUpdate({ _id: id }, { active: status });
   return result;
 };
+const toogleUserRoleIntoDB = async (id: string) => {
+  const user = await User.findById({ _id: id });
+  if (!user) {
+    return null;
+  }
+  const newRole = user.role === "admin" ? "user" : "admin";
+  const result = await User.findByIdAndUpdate({ _id: id }, { role: newRole });
+  return result;
+};
 
 const updateUserIntoDB = async (id: string, payload: Partial<IUser>) => {
   const result = await User.findByIdAndUpdate({ _id: id }, payload, {
@@ -73,4 +82,5 @@ export const UserServices = {
   deleteUserFromDB,
   updateUserIntoDB,
   followUserIntoDB,
+  toogleUserRoleIntoDB,
 };

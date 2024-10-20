@@ -96,6 +96,19 @@ const toogleUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const toogleUserRole = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.toogleUserRoleIntoDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User updated sucessfully!!",
+    data: result,
+  });
+});
 const updateUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log("up id", id);
@@ -175,4 +188,5 @@ export const UserControllers = {
   deleteUser,
   updateUser,
   recoverPassword,
+  toogleUserRole,
 };
