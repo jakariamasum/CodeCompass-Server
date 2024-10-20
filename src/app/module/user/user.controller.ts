@@ -109,6 +109,22 @@ const toogleUserRole = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const toogleUserVerify = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.toogleUserVerifyIntoDB(
+    id as string,
+    req.body
+  );
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User verified!!",
+    data: result,
+  });
+});
 const updateUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   console.log("up id", id);
@@ -189,4 +205,5 @@ export const UserControllers = {
   updateUser,
   recoverPassword,
   toogleUserRole,
+  toogleUserVerify,
 };

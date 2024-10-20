@@ -10,7 +10,7 @@ export interface IUser {
   role: "user" | "admin";
   following: Types.ObjectId[];
   followers: Types.ObjectId[];
-  verified: "no" | "pendinig" | "yes";
+  verified: "no" | "pendig" | "yes";
   matchPassword(enteredPassword: string): Promise<boolean>;
   active: boolean;
 }

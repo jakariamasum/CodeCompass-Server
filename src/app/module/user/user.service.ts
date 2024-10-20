@@ -73,6 +73,17 @@ const followUserIntoDB = async (userId: string, follower: string) => {
   return result;
 };
 
+const toogleUserVerifyIntoDB = async (id: string, payload: Partial<IUser>) => {
+  const user = await User.findById({ _id: id });
+  if (!user) {
+    return null;
+  }
+  const result = await User.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserInDB,
   signInIntoDB,
@@ -83,4 +94,5 @@ export const UserServices = {
   updateUserIntoDB,
   followUserIntoDB,
   toogleUserRoleIntoDB,
+  toogleUserVerifyIntoDB,
 };
