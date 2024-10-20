@@ -25,7 +25,7 @@ const checkout = catchAsync(async (req, res) => {
           quantity: 1,
         },
       ],
-      customer_email: req.body.email,
+      customer_email: req.body.customerEmail,
 
       success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}/cancel`,
@@ -44,7 +44,6 @@ const savePaymentData = catchAsync(async (req, res) => {
   let event;
 
   try {
-    // Verify the event with Stripe's webhook secret
     event = stripe.webhooks.constructEvent(
       req.body,
       sig as string,
@@ -70,8 +69,6 @@ const savePaymentData = catchAsync(async (req, res) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.json({ received: true });
-
   res.json({ received: true });
 });
 

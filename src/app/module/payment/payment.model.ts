@@ -2,12 +2,12 @@ import { model, Schema } from "mongoose";
 import { IPayment } from "./payment.interface";
 
 const PaymentSchema = new Schema<IPayment>({
-  paymentId: { type: String, required: true },
-  amount: { type: Number, required: true },
-  currency: { type: String, required: true },
-  customerEmail: { type: Schema.Types.ObjectId, required: true },
-  status: { type: String, required: true },
-  subscriptionId: { type: String, required: true },
+  paymentId: { type: String },
+  amount: { type: Number },
+  currency: { type: String },
+  customerEmail: { type: String },
+  status: { type: String },
+  subscriptionId: { type: String },
 });
 
 export const Payment = model<IPayment>("Payment", PaymentSchema);

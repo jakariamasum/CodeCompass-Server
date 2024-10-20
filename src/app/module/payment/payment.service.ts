@@ -6,7 +6,7 @@ const savePaymentDataToDB = async (session: any) => {
       paymentId: session.id,
       amount: session.amount_total,
       currency: session.currency,
-      customerEmail: session.customer_email,
+      customerEmail: session.customer_details.email,
       status: session.payment_status,
       subscriptionId: session.subscription,
       createdAt: new Date(),

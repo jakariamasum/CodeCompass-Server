@@ -15,7 +15,7 @@ router.put("/:id", PostControllers.updatePost);
 router.delete("/:id", PostControllers.deletePost);
 
 // user routes
-router.get("/user-post", PostControllers.getUserPosts);
+router.get("/user-post/:id", PostControllers.getUserPosts);
 router.put("/likes/:id", PostControllers.likePost);
 router.put("/dislikes/:id", PostControllers.disLikePost);
 

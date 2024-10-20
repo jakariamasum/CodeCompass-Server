@@ -52,9 +52,9 @@ const getSinglePost = catchAsync(async (req, res) => {
 });
 
 const getUserPosts = catchAsync(async (req, res) => {
-  const { user } = req.query;
-  console.log(user);
-  const result = await PostServices.getUserPostsFromDB(user as string);
+  const { id } = req.params;
+  console.log("user", id);
+  const result = await PostServices.getUserPostsFromDB(id as string);
   if (!result) {
     throw new AppError(404, "No posts available!");
   }

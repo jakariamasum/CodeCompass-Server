@@ -1,3 +1,4 @@
+import { Mongoose, Schema } from "mongoose";
 import { IPost } from "./post.interface";
 import { Post } from "./post.model";
 
@@ -16,7 +17,8 @@ const getSinglePostFromDB = async (id: string) => {
 };
 
 const getUserPostsFromDB = async (id: string) => {
-  console.log(id);
+  console.log(1233333);
+  console.log("userid", id);
   const result = await Post.find({ user: id });
   console.log(result);
   return result;

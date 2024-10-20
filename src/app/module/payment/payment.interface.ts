@@ -1,10 +1,8 @@
-import { Types } from "mongoose";
-
 export interface IPayment extends Document {
   paymentId: string;
   amount: number;
   currency: string;
-  customerEmail: Types.ObjectId;
+  customerEmail: string;
   status: string;
   subscriptionId: string;
 }
