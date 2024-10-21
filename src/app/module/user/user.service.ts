@@ -30,7 +30,9 @@ const getAllUsersFromDB = async () => {
   return result;
 };
 const getSingleUserFromDB = async (email: string) => {
-  const result = await User.findOne({ email });
+  const result = await User.findOne({ email })
+    .populate("followers")
+    .populate("following");
   return result;
 };
 
