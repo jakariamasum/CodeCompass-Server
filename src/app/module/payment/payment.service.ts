@@ -10,7 +10,6 @@ const savePaymentDataToDB = async (session: any) => {
       status: session.payment_status,
       subscriptionId: session.subscription,
       productId: session.client_reference_id,
-      createdAt: new Date(),
     };
 
     await Payment.create(paymentData);

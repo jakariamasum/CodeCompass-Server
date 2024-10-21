@@ -1,14 +1,19 @@
 import { model, Schema } from "mongoose";
 import { IPayment } from "./payment.interface";
 
-const PaymentSchema = new Schema<IPayment>({
-  paymentId: { type: String },
-  amount: { type: Number },
-  currency: { type: String },
-  customerEmail: { type: String },
-  status: { type: String },
-  subscriptionId: { type: String },
-  productId: { type: String },
-});
+const PaymentSchema = new Schema<IPayment>(
+  {
+    paymentId: { type: String },
+    amount: { type: Number },
+    currency: { type: String },
+    customerEmail: { type: String },
+    status: { type: String },
+    subscriptionId: { type: String },
+    productId: { type: String },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export const Payment = model<IPayment>("Payment", PaymentSchema);
