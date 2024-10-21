@@ -25,7 +25,7 @@ const getAllPaymentsFromDB = async () => {
   return result;
 };
 const getUserPaymentsFromDB = async (email: string) => {
-  const result = await Payment.find({ email: email });
+  const result = await Payment.find({ customerEmail: email });
   return result;
 };
 

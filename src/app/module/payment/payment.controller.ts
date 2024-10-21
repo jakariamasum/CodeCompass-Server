@@ -89,6 +89,7 @@ const getAllPayments = catchAsync(async (req, res) => {
 });
 const getUserPayments = catchAsync(async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const result = await PaymentServices.getUserPaymentsFromDB(id as string);
   if (!result) {
     throw new AppError(404, "No payments available!");
