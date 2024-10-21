@@ -5,4 +5,5 @@ export interface IPayment extends Document {
   customerEmail: string;
   status: string;
   subscriptionId: string;
+  productId: string;
 }

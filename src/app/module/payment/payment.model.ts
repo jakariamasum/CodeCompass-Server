@@ -8,6 +8,7 @@ const PaymentSchema = new Schema<IPayment>({
   customerEmail: { type: String },
   status: { type: String },
   subscriptionId: { type: String },
+  productId: { type: String },
 });
 
 export const Payment = model<IPayment>("Payment", PaymentSchema);

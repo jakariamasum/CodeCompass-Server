@@ -1,6 +1,9 @@
 import Stripe from "stripe";
 import catchAsync from "../../utils/catchAsync";
 import { PaymentServices } from "./payment.service";
+import AppError from "../../errors/AppError";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2024-09-30.acacia",
@@ -26,7 +29,7 @@ const checkout = catchAsync(async (req, res) => {
         },
       ],
       customer_email: req.body.customerEmail,
-
+      client_reference_id: req.body.productId,
       success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}/cancel`,
     });
@@ -62,7 +65,7 @@ const savePaymentData = catchAsync(async (req, res) => {
     // Save payment data to the database
     const isSaved = await PaymentServices.savePaymentDataToDB(session);
     if (isSaved) {
-      console.log("Payment data saved successfully.");
+      console.log("Payment data saved successfully.", session);
     } else {
       console.error("Failed to save payment data.");
     }
@@ -72,4 +75,35 @@ const savePaymentData = catchAsync(async (req, res) => {
   res.json({ received: true });
 });
 
-export const PaymentControllers = { checkout, savePaymentData };
+const getAllPayments = catchAsync(async (req, res) => {
+  const result = await PaymentServices.getAllPaymentsFromDB();
+  if (!result) {
+    throw new AppError(404, "No payments available!");
+  }
+  sendResponse(res, {
+    success: true,
+    message: "Payments retrived sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+const getUserPayments = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await PaymentServices.getUserPaymentsFromDB(id as string);
+  if (!result) {
+    throw new AppError(404, "No payments available!");
+  }
+  sendResponse(res, {
+    success: true,
+    message: "Payments retrived sucessfully!",
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
+
+export const PaymentControllers = {
+  checkout,
+  savePaymentData,
+  getAllPayments,
+  getUserPayments,
+};
