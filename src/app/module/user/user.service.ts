@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
+import AppError from "../../errors/AppError";
 
 const createUserInDB = async (payload: IUser) => {
   const result = await User.create(payload);
@@ -64,13 +65,35 @@ const deleteUserFromDB = async (id: string) => {
   return result;
 };
 
-const followUserIntoDB = async (userId: string, follower: string) => {
-  const result = await User.findByIdAndUpdate(
-    { _id: userId },
-    { $addToSet: { followers: new Types.ObjectId(follower) } },
-    { new: true }
-  );
-  return result;
+const followUserIntoDB = async (userId: string, followerId: string) => {
+  const session = await User.startSession();
+  session.startTransaction();
+  console.log(userId, followerId);
+
+  try {
+    // Update User 1 to add User 2 to their following array
+    const user1Update = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { following: new Types.ObjectId(followerId) } },
+      { new: true, session }
+    );
+
+    // Update User 2 to add User 1 to their followers array
+    const user2Update = await User.findByIdAndUpdate(
+      followerId,
+      { $addToSet: { followers: new Types.ObjectId(userId) } },
+      { new: true, session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return { user1Update, user2Update };
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw new AppError(404, "Error while following");
+  }
 };
 
 const toogleUserVerifyIntoDB = async (id: string, payload: Partial<IUser>) => {

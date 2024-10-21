@@ -21,4 +21,5 @@ router.post("/recover/password/kk", UserControllers.recoverPassword);
 
 // user routes
 router.put("/profile/:id", UserControllers.updateUser);
+router.post("/follow/:userId", UserControllers.followUser);
 export const UserRoutes = router;

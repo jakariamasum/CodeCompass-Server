@@ -140,6 +140,22 @@ const updateUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const followUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { followerId } = req.body;
+  const result = await UserServices.followUserIntoDB(userId, followerId);
+  if (!result) {
+    throw new AppError(404, "No user exits!");
+  }
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User follows sucessfully!!",
+    data: result,
+  });
+});
+
 const deleteUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await UserServices.deleteUserFromDB(id as string);
@@ -206,4 +222,5 @@ export const UserControllers = {
   recoverPassword,
   toogleUserRole,
   toogleUserVerify,
+  followUser,
 };
