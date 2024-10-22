@@ -21,12 +21,10 @@ const createCommentIntoDB = async (payload: IComment) => {
 
     return newComment[0];
   } catch (error) {
-    // Abort the transaction in case of an error
     await session.abortTransaction();
     console.error("Error creating comment:", error);
     throw new Error("Failed to create comment");
   } finally {
-    // End the session
     session.endSession();
   }
 };
