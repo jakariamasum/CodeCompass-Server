@@ -1,9 +1,34 @@
+import mongoose from "mongoose";
 import { IComment } from "./comment.interface";
 import { Comment } from "./comment.model";
+import { Post } from "../post/post.model";
 
 const createCommentIntoDB = async (payload: IComment) => {
-  const result = await Comment.create(payload);
-  return result;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const newComment = await Comment.create([payload], { session });
+
+    const result = await Post.findByIdAndUpdate(
+      payload.post,
+      { $push: { comments: newComment[0]._id } },
+      { new: true, session }
+    );
+    console.log(result);
+    await session.commitTransaction();
+
+    return newComment[0];
+  } catch (error) {
+    // Abort the transaction in case of an error
+    await session.abortTransaction();
+    console.error("Error creating comment:", error);
+    throw new Error("Failed to create comment");
+  } finally {
+    // End the session
+    session.endSession();
+  }
 };
 
 const getAllComments = async () => {
