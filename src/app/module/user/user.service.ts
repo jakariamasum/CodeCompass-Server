@@ -109,6 +109,15 @@ const toogleUserVerifyIntoDB = async (id: string, payload: Partial<IUser>) => {
   return result;
 };
 
+const updateUserPasswordIntoDB = async (email: string, password: string) => {
+  const user = await User.findOneAndUpdate(
+    { email: email },
+    { password: password },
+    { new: true }
+  );
+  return user;
+};
+
 export const UserServices = {
   createUserInDB,
   signInIntoDB,
@@ -120,4 +129,5 @@ export const UserServices = {
   followUserIntoDB,
   toogleUserRoleIntoDB,
   toogleUserVerifyIntoDB,
+  updateUserPasswordIntoDB,
 };

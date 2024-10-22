@@ -17,9 +17,8 @@ router.put("/role/:id", UserControllers.toogleUserRole);
 router.put("/role/verify/:id", UserControllers.toogleUserVerify);
 router.delete("/:id", UserControllers.deleteUser);
 
-router.post("/recover/password/kk", UserControllers.recoverPassword);
-
 // user routes
 router.put("/profile/:id", UserControllers.updateUser);
 router.post("/follow/:userId", UserControllers.followUser);
+router.post("/password-update", UserControllers.updateUserPassword);
 export const UserRoutes = router;

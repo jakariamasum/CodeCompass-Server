@@ -10,4 +10,6 @@ export default {
   bcrypt_salt_rounds: process.env.bcrypt_salt_rounds,
   jwt_secret: process.env.secret,
   jwt_expires: process.env.expiresIn,
+  nodemailer_user: process.env.NODE_MAILER_USER,
+  nodemailer_pass: process.env.NODE_MAILER_PASS,
 };
